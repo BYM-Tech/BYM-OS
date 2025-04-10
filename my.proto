@@ -1,0 +1,17 @@
+rust_protobuf {
+    name: "libmy_proto",
+
+    // Crate name that's used to generate the rust_library variants.
+    crate_name: "my_proto",
+
+    // Relative paths to the protobuf source files
+    protos: ["src/protos/my.proto"],
+
+    // If protobufs define gRPCs, then they should go in grpc_protos
+    // instead.
+    // grpc_protos: ["src/protos/my.proto"],
+
+    // 'source_stem' controls the output filename.
+    // This is the filename that's used in an include! macro.
+    source_stem: "my_proto_source",
+}
