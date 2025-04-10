@@ -1,16 +1,37 @@
-rust_binary {
-   name: "hello_bzip_bindgen_include",
-   srcs: [
-         // The primary rust source file must come first in this list.
-         "src/lib.rs",
+cc_library {
+    name: "libbuzz",
+    srcs: ["libbuzz.c"],
+}
 
-         // The module providing the bindgen bindings is
-         // included in srcs prepended by ":".
-         ":libbuzz_bindgen",
-    ],
+rust_bindgen {
+     name: "libbuzz_bindgen",
 
-    // Dependencies need to be redeclared when generated source is used via srcs.
-    shared_libs: [
-        "libbuzz",
-    ],
+     // Crate name that's used to generate the rust_library variants.
+     crate_name: "buzz_bindgen",
+
+     // Path to the wrapper source file.
+     wrapper_src: "libbuzz_wrapper.h",
+
+     // 'source_stem' controls the output filename.
+     // This is the filename that's used in an include! macro.
+     //
+     // In this case, we just use "bindings", which produces
+     // "bindings.rs".
+     source_stem: "bindings",
+
+     // Bindgen-specific flags and options to customize the bindings.
+     // See the bindgen manual for more information.
+     bindgen_flags: ["--verbose"],
+
+     // Clang flags to be used when generating the bindings.
+     cflags: ["-DSOME_FLAG"],
+
+     // Shared, static, and header libraries which export the necessary
+     // include directories must be specified.
+     //
+     // These libraries will also be included in the crate if static,
+     // or propagated to dependents if shared.
+     // static_libs: ["libbuzz"]
+     // header_libs: ["libbuzz"]
+     shared_libs: ["libbuzz"],
 }
